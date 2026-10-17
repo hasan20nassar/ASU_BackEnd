@@ -210,9 +210,20 @@ SPECTACULAR_SETTINGS = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://asu-front-end.vercel.app",
+]
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https:\/\/.*\.vercel\.app$",
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.vercel.app",
+    "https://asu-front-end.vercel.app",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
 
 # Custom User Model
 AUTH_USER_MODEL = "university.UserProfile"
