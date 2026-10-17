@@ -39,8 +39,7 @@ venv.bak/
 *.sqlite3
 *.sqlite3-journal
 
-# Django collected static files and user media
-staticfiles/
+# User media
 media/
 
 # IDE / Editor folders
