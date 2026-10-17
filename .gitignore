@@ -33,9 +33,7 @@ env.bak/
 venv.bak/
 
 # Environment variables
-.env
-.env.*
-!.env.example
+.env*
 
 # Databases
 *.sqlite3
