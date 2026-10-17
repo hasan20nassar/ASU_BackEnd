@@ -1,0 +1,113 @@
+[
+{
+  "model": "university.usernotificationpreference",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "mute_messages": false,
+    "mute_results": false,
+    "mute_info": false,
+    "mute_warning": false,
+    "mute_urgent": false
+  }
+},
+{
+  "model": "university.sitesetting",
+  "pk": 1,
+  "fields": {
+    "email": "info@asu.edu.sytest",
+    "phone": "(+963) 11 5954910",
+    "address": "معرة صيدنايا، ريف دمشق، سوريا",
+    "address_en": "Maarat Saidnaya, Damascus Countryside, Syria",
+    "office_address": "دمشق، البرامكة، مقابل كلية الحقوق - مكتب المتابعة والتسجيل",
+    "office_address_en": "Damascus, Baramkeh, Opposite Faculty of Law - Follow-up & Registration Office",
+    "working_hours": "الأحد - الخميس: 8:00 ص - 4:00 م",
+    "working_hours_en": "Sunday - Thursday: 8:00 AM - 4:00 PM",
+    "contact_fields": {
+      "email": {
+        "key": "email",
+        "value": "info@asu.edu.sytest",
+        "enabled": true,
+        "valueAr": "info@asu.edu.sy",
+        "valueEn": "info@asu.edu.sy"
+      },
+      "phone": {
+        "key": "phone",
+        "value": "(+963) 11 5954910",
+        "enabled": true,
+        "valueAr": "(+963) 11 5954910",
+        "valueEn": "(+963) 11 5954910"
+      },
+      "address": {
+        "key": "address",
+        "value": "معرة صيدنايا، ريف دمشق، سوريا",
+        "enabled": true,
+        "valueAr": "معرة صيدنايا، ريف دمشق، سوريا",
+        "valueEn": "Maarat Saidnaya, Damascus Countryside, Syria"
+      },
+      "workingHours": {
+        "key": "workingHours",
+        "value": "الأحد - الخميس: 8:00 ص - 4:00 م",
+        "enabled": true,
+        "valueAr": "الأحد - الخميس: 8:00 ص - 4:00 م",
+        "valueEn": "Sunday - Thursday: 8:00 AM - 4:00 PM"
+      },
+      "officeAddress": {
+        "key": "officeAddress",
+        "value": "دمشق، البرامكة، مقابل كلية الحقوق - مكتب المتابعة والتسجيل",
+        "enabled": true,
+        "valueAr": "دمشق، البرامكة، مقابل كلية الحقوق - مكتب المتابعة والتسجيل",
+        "valueEn": "Damascus, Baramkeh, Opposite Faculty of Law - Follow-up & Registration Office"
+      }
+    },
+    "registration_open": true,
+    "maintenance_mode": false,
+    "show_results": true,
+    "social_links": {
+      "twitter": {
+        "key": "twitter",
+        "url": "https://x.com/asu_syria",
+        "nameAr": "منصة X",
+        "nameEn": "X",
+        "enabled": false
+      },
+      "youtube": {
+        "key": "youtube",
+        "url": "https://youtube.com/@antiochsyrianuniversitytest",
+        "nameAr": "يوتيوب",
+        "nameEn": "YouTube",
+        "enabled": true
+      },
+      "facebook": {
+        "key": "facebook",
+        "url": "https://www.facebook.com/asu.edu.sy.privatetest",
+        "nameAr": "فيسبوك",
+        "nameEn": "Facebook",
+        "enabled": true
+      },
+      "linkedin": {
+        "key": "linkedin",
+        "url": "https://linkedin.com/school/antioch-syrian-university",
+        "nameAr": "لينكد إن",
+        "nameEn": "LinkedIn",
+        "enabled": false
+      },
+      "telegram": {
+        "key": "telegram",
+        "url": "https://t.me/asu_syria",
+        "nameAr": "تلجرام",
+        "nameEn": "Telegram",
+        "enabled": false
+      },
+      "instagram": {
+        "key": "instagram",
+        "url": "https://instagram.com/asu_syria",
+        "nameAr": "إنستغرام",
+        "nameEn": "Instagram",
+        "enabled": false
+      }
+    },
+    "updated_at": "2026-08-23T23:33:11.750Z"
+  }
+}
+]

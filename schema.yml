@@ -1,0 +1,3162 @@
+openapi: 3.0.3
+info:
+  title: Antioch Syrian Private University (ASU) API
+  version: 1.0.0
+  description: API documentation for ASU portal web application.
+paths:
+  /api/alumni-stories/:
+    get:
+      operationId: alumni_stories_list
+      parameters:
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - alumni-stories
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AlumniStory'
+          description: ''
+    post:
+      operationId: alumni_stories_create
+      tags:
+      - alumni-stories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlumniStory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AlumniStory'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AlumniStory'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlumniStory'
+          description: ''
+  /api/alumni-stories/{id}/:
+    get:
+      operationId: alumni_stories_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Alumni Story.
+        required: true
+      tags:
+      - alumni-stories
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlumniStory'
+          description: ''
+    put:
+      operationId: alumni_stories_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Alumni Story.
+        required: true
+      tags:
+      - alumni-stories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlumniStory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AlumniStory'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AlumniStory'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlumniStory'
+          description: ''
+    patch:
+      operationId: alumni_stories_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Alumni Story.
+        required: true
+      tags:
+      - alumni-stories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAlumniStory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAlumniStory'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAlumniStory'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlumniStory'
+          description: ''
+    delete:
+      operationId: alumni_stories_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Alumni Story.
+        required: true
+      tags:
+      - alumni-stories
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/auth/login/:
+    post:
+      operationId: auth_login_create
+      description: |-
+        Check the credentials and return the REST Token
+        if the credentials are valid and authenticated.
+        Calls Django Auth login method to register User ID
+        in Django session framework
+
+        Accept the following POST parameters: username, password
+        Return the REST Framework Token Object's key.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWT'
+          description: ''
+  /api/auth/logout/:
+    post:
+      operationId: auth_logout_create
+      description: |-
+        Calls Django logout method and delete the Token object
+        assigned to the current User object.
+
+        Accepts/Returns nothing.
+      tags:
+      - auth
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/auth/password/change/:
+    post:
+      operationId: auth_password_change_create
+      description: |-
+        Calls Django Auth SetPasswordForm save method.
+
+        Accepts the following POST parameters: new_password1, new_password2
+        Returns the success/fail message.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordChange'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordChange'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordChange'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/auth/password/reset/:
+    post:
+      operationId: auth_password_reset_create
+      description: |-
+        Calls Django Auth PasswordResetForm save method.
+
+        Accepts the following POST parameters: email
+        Returns the success/fail message.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/auth/password/reset/confirm/:
+    post:
+      operationId: auth_password_reset_confirm_create
+      description: |-
+        Password reset e-mail link is confirmed, therefore
+        this resets the user's password.
+
+        Accepts the following POST parameters: token, uid,
+            new_password1, new_password2
+        Returns the success/fail message.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/auth/registration/:
+    post:
+      operationId: auth_registration_create
+      description: |-
+        Registers a new user.
+
+        Accepts the following POST parameters: username, email, password1, password2.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Register'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Register'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWT'
+          description: ''
+  /api/auth/registration/resend-email/:
+    post:
+      operationId: auth_registration_resend_email_create
+      description: |-
+        Resends another email to an unverified email.
+
+        Accepts the following POST parameter: email.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerification'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/auth/registration/verify-email/:
+    post:
+      operationId: auth_registration_verify_email_create
+      description: |-
+        Verifies the email associated with the provided key.
+
+        Accepts the following POST parameter: key.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /api/auth/token/refresh/:
+    post:
+      operationId: auth_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/auth/token/verify/:
+    post:
+      operationId: auth_token_verify_create
+      description: |-
+        Takes a token and indicates if it is valid.  This view provides no
+        information about a token's fitness for a particular use.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenVerify'
+          description: ''
+  /api/auth/user/:
+    get:
+      operationId: auth_user_retrieve
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - auth
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+          description: ''
+    put:
+      operationId: auth_user_update
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDetails'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserDetails'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserDetails'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+          description: ''
+    patch:
+      operationId: auth_user_partial_update
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetails'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetails'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetails'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+          description: ''
+  /api/courses/:
+    get:
+      operationId: courses_list
+      parameters:
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - courses
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+          description: ''
+    post:
+      operationId: courses_create
+      tags:
+      - courses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Course'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Course'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+          description: ''
+  /api/courses/{id}/:
+    get:
+      operationId: courses_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Course.
+        required: true
+      tags:
+      - courses
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+          description: ''
+    put:
+      operationId: courses_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Course.
+        required: true
+      tags:
+      - courses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Course'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Course'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+          description: ''
+    patch:
+      operationId: courses_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Course.
+        required: true
+      tags:
+      - courses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCourse'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCourse'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCourse'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+          description: ''
+    delete:
+      operationId: courses_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Course.
+        required: true
+      tags:
+      - courses
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/events/:
+    get:
+      operationId: events_list
+      parameters:
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - events
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+          description: ''
+    post:
+      operationId: events_create
+      tags:
+      - events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Event'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Event'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+  /api/events/{id}/:
+    get:
+      operationId: events_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Event.
+        required: true
+      tags:
+      - events
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+    put:
+      operationId: events_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Event.
+        required: true
+      tags:
+      - events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Event'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Event'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+    patch:
+      operationId: events_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Event.
+        required: true
+      tags:
+      - events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEvent'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEvent'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEvent'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+    delete:
+      operationId: events_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Event.
+        required: true
+      tags:
+      - events
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/faculties/:
+    get:
+      operationId: faculties_list
+      parameters:
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - faculties
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Faculty'
+          description: ''
+    post:
+      operationId: faculties_create
+      tags:
+      - faculties
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Faculty'
+          description: ''
+  /api/faculties/{id}/:
+    get:
+      operationId: faculties_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Faculty.
+        required: true
+      tags:
+      - faculties
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Faculty'
+          description: ''
+    put:
+      operationId: faculties_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Faculty.
+        required: true
+      tags:
+      - faculties
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Faculty'
+          description: ''
+    patch:
+      operationId: faculties_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Faculty.
+        required: true
+      tags:
+      - faculties
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedFaculty'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedFaculty'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedFaculty'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Faculty'
+          description: ''
+    delete:
+      operationId: faculties_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Faculty.
+        required: true
+      tags:
+      - faculties
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/faculty-members/:
+    get:
+      operationId: faculty_members_list
+      parameters:
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - faculty-members
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FacultyMember'
+          description: ''
+    post:
+      operationId: faculty_members_create
+      tags:
+      - faculty-members
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FacultyMember'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FacultyMember'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FacultyMember'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FacultyMember'
+          description: ''
+  /api/faculty-members/{id}/:
+    get:
+      operationId: faculty_members_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Faculty Member.
+        required: true
+      tags:
+      - faculty-members
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FacultyMember'
+          description: ''
+    put:
+      operationId: faculty_members_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Faculty Member.
+        required: true
+      tags:
+      - faculty-members
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FacultyMember'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FacultyMember'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FacultyMember'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FacultyMember'
+          description: ''
+    patch:
+      operationId: faculty_members_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Faculty Member.
+        required: true
+      tags:
+      - faculty-members
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedFacultyMember'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedFacultyMember'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedFacultyMember'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FacultyMember'
+          description: ''
+    delete:
+      operationId: faculty_members_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Faculty Member.
+        required: true
+      tags:
+      - faculty-members
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/news-articles/:
+    get:
+      operationId: news_articles_list
+      parameters:
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - news-articles
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewsArticle'
+          description: ''
+    post:
+      operationId: news_articles_create
+      tags:
+      - news-articles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsArticle'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewsArticle'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NewsArticle'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsArticle'
+          description: ''
+  /api/news-articles/{id}/:
+    get:
+      operationId: news_articles_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this News Article.
+        required: true
+      tags:
+      - news-articles
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsArticle'
+          description: ''
+    put:
+      operationId: news_articles_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this News Article.
+        required: true
+      tags:
+      - news-articles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsArticle'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewsArticle'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NewsArticle'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsArticle'
+          description: ''
+    patch:
+      operationId: news_articles_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this News Article.
+        required: true
+      tags:
+      - news-articles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedNewsArticle'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedNewsArticle'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedNewsArticle'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsArticle'
+          description: ''
+    delete:
+      operationId: news_articles_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this News Article.
+        required: true
+      tags:
+      - news-articles
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/programs/:
+    get:
+      operationId: programs_list
+      parameters:
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - programs
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Program'
+          description: ''
+    post:
+      operationId: programs_create
+      tags:
+      - programs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Program'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Program'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Program'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Program'
+          description: ''
+  /api/programs/{id}/:
+    get:
+      operationId: programs_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Program.
+        required: true
+      tags:
+      - programs
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Program'
+          description: ''
+    put:
+      operationId: programs_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Program.
+        required: true
+      tags:
+      - programs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Program'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Program'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Program'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Program'
+          description: ''
+    patch:
+      operationId: programs_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Program.
+        required: true
+      tags:
+      - programs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProgram'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProgram'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProgram'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Program'
+          description: ''
+    delete:
+      operationId: programs_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Program.
+        required: true
+      tags:
+      - programs
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/schedule-items/:
+    get:
+      operationId: schedule_items_list
+      tags:
+      - schedule-items
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScheduleItem'
+          description: ''
+    post:
+      operationId: schedule_items_create
+      tags:
+      - schedule-items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ScheduleItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ScheduleItem'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleItem'
+          description: ''
+  /api/schedule-items/{id}/:
+    get:
+      operationId: schedule_items_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Schedule Item.
+        required: true
+      tags:
+      - schedule-items
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleItem'
+          description: ''
+    put:
+      operationId: schedule_items_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Schedule Item.
+        required: true
+      tags:
+      - schedule-items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ScheduleItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ScheduleItem'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleItem'
+          description: ''
+    patch:
+      operationId: schedule_items_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Schedule Item.
+        required: true
+      tags:
+      - schedule-items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedScheduleItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedScheduleItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedScheduleItem'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleItem'
+          description: ''
+    delete:
+      operationId: schedule_items_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Schedule Item.
+        required: true
+      tags:
+      - schedule-items
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/student-grades/:
+    get:
+      operationId: student_grades_list
+      tags:
+      - student-grades
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StudentGrade'
+          description: ''
+    post:
+      operationId: student_grades_create
+      tags:
+      - student-grades
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentGrade'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StudentGrade'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudentGrade'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentGrade'
+          description: ''
+  /api/student-grades/{id}/:
+    get:
+      operationId: student_grades_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Student Grade.
+        required: true
+      tags:
+      - student-grades
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentGrade'
+          description: ''
+    put:
+      operationId: student_grades_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Student Grade.
+        required: true
+      tags:
+      - student-grades
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentGrade'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StudentGrade'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudentGrade'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentGrade'
+          description: ''
+    patch:
+      operationId: student_grades_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Student Grade.
+        required: true
+      tags:
+      - student-grades
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedStudentGrade'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedStudentGrade'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedStudentGrade'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentGrade'
+          description: ''
+    delete:
+      operationId: student_grades_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Student Grade.
+        required: true
+      tags:
+      - student-grades
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/students/:
+    get:
+      operationId: students_list
+      parameters:
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - students
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+          description: ''
+    post:
+      operationId: students_create
+      tags:
+      - students
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Student'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Student'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+          description: ''
+  /api/students/{id}/:
+    get:
+      operationId: students_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Student.
+        required: true
+      tags:
+      - students
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+          description: ''
+    put:
+      operationId: students_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Student.
+        required: true
+      tags:
+      - students
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Student'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Student'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+          description: ''
+    patch:
+      operationId: students_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Student.
+        required: true
+      tags:
+      - students
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedStudent'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedStudent'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedStudent'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+          description: ''
+    delete:
+      operationId: students_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Student.
+        required: true
+      tags:
+      - students
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    AlumniStory:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        faculty:
+          type: integer
+        facultySlug:
+          type: string
+          readOnly: true
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        graduationYear:
+          type: integer
+        programAr:
+          type: string
+        programEn:
+          type: string
+        currentRoleAr:
+          type: string
+        currentRoleEn:
+          type: string
+        companyAr:
+          type: string
+        companyEn:
+          type: string
+        storyAr:
+          type: string
+        storyEn:
+          type: string
+        image:
+          type: string
+          title: Image Path
+          maxLength: 255
+      required:
+      - companyAr
+      - companyEn
+      - currentRoleAr
+      - currentRoleEn
+      - faculty
+      - facultySlug
+      - graduationYear
+      - id
+      - image
+      - nameAr
+      - nameEn
+      - programAr
+      - programEn
+      - storyAr
+      - storyEn
+    BranchEnum:
+      enum:
+      - scientific
+      - literary
+      - both
+      type: string
+      description: |-
+        * `scientific` - Scientific
+        * `literary` - Literary
+        * `both` - Both
+    CategoryEnum:
+      enum:
+      - announcement
+      - event
+      - achievement
+      - research
+      type: string
+      description: |-
+        * `announcement` - Announcement
+        * `event` - Event
+        * `achievement` - Achievement
+        * `research` - Research
+    Course:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        code:
+          type: string
+          title: Course Code
+          maxLength: 50
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        credits:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+      required:
+      - code
+      - id
+      - nameAr
+      - nameEn
+    DayEnum:
+      enum:
+      - sunday
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+      type: string
+      description: |-
+        * `sunday` - Sunday
+        * `monday` - Monday
+        * `tuesday` - Tuesday
+        * `wednesday` - Wednesday
+        * `thursday` - Thursday
+        * `friday` - Friday
+        * `saturday` - Saturday
+    Event:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        titleAr:
+          type: string
+        titleEn:
+          type: string
+        descriptionAr:
+          type: string
+        descriptionEn:
+          type: string
+        date:
+          type: string
+          format: date
+          title: Event Date
+        time:
+          type: string
+          title: Event Time
+          maxLength: 100
+        location:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          title: Event Type
+      required:
+      - date
+      - descriptionAr
+      - descriptionEn
+      - id
+      - location
+      - time
+      - titleAr
+      - titleEn
+      - type
+    Faculty:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        slug:
+          type: string
+          title: Faculty Slug
+          maxLength: 100
+          pattern: ^[-a-zA-Z0-9_]+$
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        descriptionAr:
+          type: string
+        descriptionEn:
+          type: string
+        icon:
+          type: string
+          title: Icon Name
+          maxLength: 100
+        color:
+          type: string
+          title: Color Class
+          maxLength: 100
+        image:
+          type: string
+          nullable: true
+          title: Image Path
+          maxLength: 255
+        programs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Program'
+          readOnly: true
+      required:
+      - descriptionAr
+      - descriptionEn
+      - id
+      - nameAr
+      - nameEn
+      - programs
+      - slug
+    FacultyMember:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        faculty:
+          type: integer
+        facultySlug:
+          type: string
+          readOnly: true
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        titleAr:
+          type: string
+        titleEn:
+          type: string
+        departmentAr:
+          type: string
+        departmentEn:
+          type: string
+        descriptionAr:
+          type: string
+        descriptionEn:
+          type: string
+        email:
+          type: string
+          format: email
+          title: Email Address
+          maxLength: 254
+        officeHours:
+          type: string
+        image:
+          type: string
+          title: Image Path
+          maxLength: 255
+        isHead:
+          type: boolean
+      required:
+      - departmentAr
+      - departmentEn
+      - descriptionAr
+      - descriptionEn
+      - email
+      - faculty
+      - facultySlug
+      - id
+      - image
+      - isHead
+      - nameAr
+      - nameEn
+      - officeHours
+      - titleAr
+      - titleEn
+    JWT:
+      type: object
+      description: Serializer for JWT authentication.
+      properties:
+        access:
+          type: string
+        refresh:
+          type: string
+        user:
+          $ref: '#/components/schemas/UserDetails'
+      required:
+      - access
+      - refresh
+      - user
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          oneOf:
+          - type: string
+            format: email
+          - type: string
+            maxLength: 0
+        password:
+          type: string
+      required:
+      - password
+    NewsArticle:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        slug:
+          type: string
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        titleAr:
+          type: string
+        titleEn:
+          type: string
+        excerptAr:
+          type: string
+        excerptEn:
+          type: string
+        contentAr:
+          type: string
+        contentEn:
+          type: string
+        image:
+          type: string
+          title: Image Path
+          maxLength: 255
+        category:
+          $ref: '#/components/schemas/CategoryEnum'
+        date:
+          type: string
+          format: date
+          title: Publish Date
+        featured:
+          type: boolean
+      required:
+      - category
+      - contentAr
+      - contentEn
+      - date
+      - excerptAr
+      - excerptEn
+      - id
+      - image
+      - slug
+      - titleAr
+      - titleEn
+    NullEnum:
+      enum:
+      - null
+    PasswordChange:
+      type: object
+      properties:
+        new_password1:
+          type: string
+          maxLength: 128
+        new_password2:
+          type: string
+          maxLength: 128
+      required:
+      - new_password1
+      - new_password2
+    PasswordReset:
+      type: object
+      description: Serializer for requesting a password reset e-mail.
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    PasswordResetConfirm:
+      type: object
+      description: Serializer for confirming a password reset attempt.
+      properties:
+        new_password1:
+          type: string
+          maxLength: 128
+        new_password2:
+          type: string
+          maxLength: 128
+        uid:
+          type: string
+        token:
+          type: string
+      required:
+      - new_password1
+      - new_password2
+      - token
+      - uid
+    PatchedAlumniStory:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        faculty:
+          type: integer
+        facultySlug:
+          type: string
+          readOnly: true
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        graduationYear:
+          type: integer
+        programAr:
+          type: string
+        programEn:
+          type: string
+        currentRoleAr:
+          type: string
+        currentRoleEn:
+          type: string
+        companyAr:
+          type: string
+        companyEn:
+          type: string
+        storyAr:
+          type: string
+        storyEn:
+          type: string
+        image:
+          type: string
+          title: Image Path
+          maxLength: 255
+    PatchedCourse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        code:
+          type: string
+          title: Course Code
+          maxLength: 50
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        credits:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+    PatchedEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        titleAr:
+          type: string
+        titleEn:
+          type: string
+        descriptionAr:
+          type: string
+        descriptionEn:
+          type: string
+        date:
+          type: string
+          format: date
+          title: Event Date
+        time:
+          type: string
+          title: Event Time
+          maxLength: 100
+        location:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          title: Event Type
+    PatchedFaculty:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        slug:
+          type: string
+          title: Faculty Slug
+          maxLength: 100
+          pattern: ^[-a-zA-Z0-9_]+$
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        descriptionAr:
+          type: string
+        descriptionEn:
+          type: string
+        icon:
+          type: string
+          title: Icon Name
+          maxLength: 100
+        color:
+          type: string
+          title: Color Class
+          maxLength: 100
+        image:
+          type: string
+          nullable: true
+          title: Image Path
+          maxLength: 255
+        programs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Program'
+          readOnly: true
+    PatchedFacultyMember:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        faculty:
+          type: integer
+        facultySlug:
+          type: string
+          readOnly: true
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        titleAr:
+          type: string
+        titleEn:
+          type: string
+        departmentAr:
+          type: string
+        departmentEn:
+          type: string
+        descriptionAr:
+          type: string
+        descriptionEn:
+          type: string
+        email:
+          type: string
+          format: email
+          title: Email Address
+          maxLength: 254
+        officeHours:
+          type: string
+        image:
+          type: string
+          title: Image Path
+          maxLength: 255
+        isHead:
+          type: boolean
+    PatchedNewsArticle:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        slug:
+          type: string
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        titleAr:
+          type: string
+        titleEn:
+          type: string
+        excerptAr:
+          type: string
+        excerptEn:
+          type: string
+        contentAr:
+          type: string
+        contentEn:
+          type: string
+        image:
+          type: string
+          title: Image Path
+          maxLength: 255
+        category:
+          $ref: '#/components/schemas/CategoryEnum'
+        date:
+          type: string
+          format: date
+          title: Publish Date
+        featured:
+          type: boolean
+    PatchedProgram:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        slug:
+          type: string
+          title: Program Slug
+          maxLength: 100
+          pattern: ^[-a-zA-Z0-9_]+$
+        faculty:
+          type: integer
+        facultySlug:
+          type: string
+          readOnly: true
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        descriptionAr:
+          type: string
+        descriptionEn:
+          type: string
+        creditHours:
+          type: integer
+        minScorePercent:
+          type: integer
+        minScorePoints:
+          type: integer
+        tuitionSyrian:
+          type: integer
+        tuitionNonResident:
+          type: integer
+        tuitionCurrency:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        branch:
+          allOf:
+          - $ref: '#/components/schemas/BranchEnum'
+          title: Branch Requirement
+        duration:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Duration (Years)
+          description: Duration in years
+    PatchedScheduleItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        course:
+          type: integer
+        courseCode:
+          type: string
+          readOnly: true
+        courseNameAr:
+          type: string
+          readOnly: true
+        courseNameEn:
+          type: string
+          readOnly: true
+        day:
+          allOf:
+          - $ref: '#/components/schemas/DayEnum'
+          title: Day Slug
+        dayAr:
+          type: string
+        dayEn:
+          type: string
+        time:
+          type: string
+          title: Time Period (e.g. 08:00 - 09:30)
+          maxLength: 100
+        room:
+          type: string
+          title: Class Room
+          maxLength: 100
+        instructor:
+          type: string
+          title: Instructor Name (AR)
+          maxLength: 255
+        instructorEn:
+          type: string
+    PatchedStudent:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+          nullable: true
+          title: User Account
+        studentId:
+          type: string
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        faculty:
+          type: integer
+        facultySlug:
+          type: string
+          readOnly: true
+        program:
+          type: integer
+        programSlug:
+          type: string
+          readOnly: true
+        year:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Year of Study
+        gpa:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        totalCredits:
+          type: integer
+        completedCredits:
+          type: integer
+        image:
+          type: string
+          nullable: true
+          title: Image Path
+          maxLength: 255
+        isTop:
+          type: boolean
+        rank:
+          nullable: true
+          minimum: 0
+          maximum: 2147483647
+          oneOf:
+          - $ref: '#/components/schemas/RankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        schedule:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduleItem'
+          readOnly: true
+        grades:
+          type: array
+          items:
+            $ref: '#/components/schemas/StudentGrade'
+          readOnly: true
+    PatchedStudentGrade:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        course:
+          type: integer
+        courseCode:
+          type: string
+          readOnly: true
+        courseNameAr:
+          type: string
+          readOnly: true
+        courseNameEn:
+          type: string
+          readOnly: true
+        grade:
+          type: string
+          title: Letter Grade (e.g. A, B+)
+          maxLength: 20
+        points:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,2})?$
+          title: GPA Points
+    PatchedUserDetails:
+      type: object
+      description: User model w/o password
+      properties:
+        pk:
+          type: integer
+          readOnly: true
+          title: ID
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Email address
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+    Program:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        slug:
+          type: string
+          title: Program Slug
+          maxLength: 100
+          pattern: ^[-a-zA-Z0-9_]+$
+        faculty:
+          type: integer
+        facultySlug:
+          type: string
+          readOnly: true
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        descriptionAr:
+          type: string
+        descriptionEn:
+          type: string
+        creditHours:
+          type: integer
+        minScorePercent:
+          type: integer
+        minScorePoints:
+          type: integer
+        tuitionSyrian:
+          type: integer
+        tuitionNonResident:
+          type: integer
+        tuitionCurrency:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        branch:
+          allOf:
+          - $ref: '#/components/schemas/BranchEnum'
+          title: Branch Requirement
+        duration:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Duration (Years)
+          description: Duration in years
+      required:
+      - creditHours
+      - descriptionAr
+      - descriptionEn
+      - duration
+      - faculty
+      - facultySlug
+      - id
+      - minScorePercent
+      - minScorePoints
+      - nameAr
+      - nameEn
+      - slug
+      - tuitionCurrency
+      - tuitionNonResident
+      - tuitionSyrian
+    RankEnum:
+      enum:
+      - 1
+      - 2
+      - 3
+      type: integer
+      description: |-
+        * `1` - 1st
+        * `2` - 2nd
+        * `3` - 3rd
+    Register:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 150
+          minLength: 1
+        email:
+          type: string
+          format: email
+        password1:
+          type: string
+          writeOnly: true
+        password2:
+          type: string
+          writeOnly: true
+      required:
+      - password1
+      - password2
+      - username
+    ResendEmailVerification:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+    RestAuthDetail:
+      type: object
+      properties:
+        detail:
+          type: string
+          readOnly: true
+      required:
+      - detail
+    ScheduleItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        course:
+          type: integer
+        courseCode:
+          type: string
+          readOnly: true
+        courseNameAr:
+          type: string
+          readOnly: true
+        courseNameEn:
+          type: string
+          readOnly: true
+        day:
+          allOf:
+          - $ref: '#/components/schemas/DayEnum'
+          title: Day Slug
+        dayAr:
+          type: string
+        dayEn:
+          type: string
+        time:
+          type: string
+          title: Time Period (e.g. 08:00 - 09:30)
+          maxLength: 100
+        room:
+          type: string
+          title: Class Room
+          maxLength: 100
+        instructor:
+          type: string
+          title: Instructor Name (AR)
+          maxLength: 255
+        instructorEn:
+          type: string
+      required:
+      - course
+      - courseCode
+      - courseNameAr
+      - courseNameEn
+      - day
+      - dayAr
+      - dayEn
+      - id
+      - instructor
+      - instructorEn
+      - room
+      - time
+    Student:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+          nullable: true
+          title: User Account
+        studentId:
+          type: string
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        faculty:
+          type: integer
+        facultySlug:
+          type: string
+          readOnly: true
+        program:
+          type: integer
+        programSlug:
+          type: string
+          readOnly: true
+        year:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Year of Study
+        gpa:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+        totalCredits:
+          type: integer
+        completedCredits:
+          type: integer
+        image:
+          type: string
+          nullable: true
+          title: Image Path
+          maxLength: 255
+        isTop:
+          type: boolean
+        rank:
+          nullable: true
+          minimum: 0
+          maximum: 2147483647
+          oneOf:
+          - $ref: '#/components/schemas/RankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        schedule:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduleItem'
+          readOnly: true
+        grades:
+          type: array
+          items:
+            $ref: '#/components/schemas/StudentGrade'
+          readOnly: true
+      required:
+      - completedCredits
+      - email
+      - faculty
+      - facultySlug
+      - grades
+      - id
+      - isTop
+      - nameAr
+      - nameEn
+      - program
+      - programSlug
+      - schedule
+      - studentId
+      - totalCredits
+    StudentGrade:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        course:
+          type: integer
+        courseCode:
+          type: string
+          readOnly: true
+        courseNameAr:
+          type: string
+          readOnly: true
+        courseNameEn:
+          type: string
+          readOnly: true
+        grade:
+          type: string
+          title: Letter Grade (e.g. A, B+)
+          maxLength: 20
+        points:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,2})?$
+          title: GPA Points
+      required:
+      - course
+      - courseCode
+      - courseNameAr
+      - courseNameEn
+      - grade
+      - id
+      - points
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+    TokenVerify:
+      type: object
+      properties:
+        token:
+          type: string
+          writeOnly: true
+      required:
+      - token
+    TypeEnum:
+      enum:
+      - academic
+      - cultural
+      - sports
+      - career
+      type: string
+      description: |-
+        * `academic` - Academic
+        * `cultural` - Cultural
+        * `sports` - Sports
+        * `career` - Career
+    UserDetails:
+      type: object
+      description: User model w/o password
+      properties:
+        pk:
+          type: integer
+          readOnly: true
+          title: ID
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Email address
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - email
+      - pk
+      - username
+    VerifyEmail:
+      type: object
+      properties:
+        key:
+          type: string
+          writeOnly: true
+      required:
+      - key
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    jwtCookieAuth:
+      type: apiKey
+      in: cookie
+      name: asu-auth
+    jwtHeaderAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
