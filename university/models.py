@@ -1379,7 +1379,16 @@ class SiteSetting(models.Model):
     social_links = models.JSONField(
         default=default_social_links, blank=True, verbose_name="Social Media Links JSON"
     )
+    published_pages = models.JSONField(
+        default=dict, blank=True, verbose_name="Published Pages JSON"
+    )
     updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not isinstance(self.published_pages, dict):
+            self.published_pages = {}
+        self.published_pages["home"] = True
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Site Setting (#{self.pk})"
@@ -1832,8 +1841,3 @@ class CampusLifeOverview(models.Model):
     class Meta:
         verbose_name = "Campus Life Overview"
         verbose_name_plural = "Campus Life Overviews"
-
-
-
-
-
