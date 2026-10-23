@@ -728,7 +728,7 @@ class MediaUploadView(APIView):
         save_rel_path = os.path.join("uploads", folder, unique_name).replace("\\", "/")
 
         saved_path = default_storage.save(save_rel_path, file_obj)
-        file_url = f"/media/{saved_path}"
+        file_url = default_storage.url(saved_path)
 
         size_bytes = file_obj.size
         size_formatted = f"{size_bytes / 1024:.1f} KB" if size_bytes < 1048576 else f"{size_bytes / 1048576:.2f} MB"
@@ -1158,7 +1158,7 @@ class BookPdfUploadView(APIView):
         ).replace("\\", "/")
 
         saved_path = default_storage.save(rel_storage_path, file_obj)
-        file_url = f"/media/{saved_path}"
+        file_url = default_storage.url(saved_path)
 
         size_bytes = file_obj.size
         size_formatted = (
@@ -1233,7 +1233,7 @@ class BookCoverUploadView(APIView):
         ).replace("\\", "/")
 
         saved_path = default_storage.save(rel_storage_path, file_obj)
-        file_url = f"/media/{saved_path}"
+        file_url = default_storage.url(saved_path)
 
         size_bytes = file_obj.size
         size_formatted = (
@@ -1543,7 +1543,7 @@ class ResearchPdfUploadView(APIView):
         rel_storage_path = os.path.join("research_papers", secure_filename)
 
         saved_path = default_storage.save(rel_storage_path, file_obj)
-        file_url = f"/media/{saved_path}"
+        file_url = default_storage.url(saved_path)
 
         size_bytes = file_obj.size
         size_formatted = (

@@ -155,6 +155,34 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
+# Storage Provider Configuration (local | cloudinary)
+STORAGE_PROVIDER = os.environ.get("STORAGE_PROVIDER", "local").lower().strip()
+CLOUDINARY_CLOUD_NAME = os.environ.get("CLOUDINARY_CLOUD_NAME", "").strip()
+CLOUDINARY_API_KEY = os.environ.get("CLOUDINARY_API_KEY", "").strip()
+CLOUDINARY_API_SECRET = os.environ.get("CLOUDINARY_API_SECRET", "").strip()
+
+if STORAGE_PROVIDER == "cloudinary" and CLOUDINARY_CLOUD_NAME:
+    try:
+        import cloudinary
+        cloudinary.config(
+            cloud_name=CLOUDINARY_CLOUD_NAME,
+            api_key=CLOUDINARY_API_KEY,
+            api_secret=CLOUDINARY_API_SECRET,
+            secure=True,
+        )
+    except Exception as _e:
+        pass
+
+STORAGES = {
+    "default": {
+        "BACKEND": "university.storage.UniversalMediaStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+    },
+}
+DEFAULT_FILE_STORAGE = "university.storage.UniversalMediaStorage"
+
 # Media files (User uploads, news images, documents)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
