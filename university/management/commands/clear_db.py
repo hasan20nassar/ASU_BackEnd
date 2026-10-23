@@ -2,8 +2,10 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 from university.models import (
     Faculty,
-    Program,
+    FacultyLaboratory,
     FacultyMember,
+    FacultyAppointment,
+    Program,
     AlumniStory,
     Course,
     Student,
@@ -11,46 +13,69 @@ from university.models import (
     StudentGrade,
     NewsArticle,
     Event,
+    AcademicCalendarEvent,
+    JobOffer,
+    JobApplication,
+    AdmissionApplication,
+    Notification,
+    UserNotificationState,
+    UserNotificationPreference,
+    ActivityLog,
+    SiteSetting,
+    Book,
+    BookReservation,
+    ResearchCenter,
+    ResearchArea,
+    ResearchPublication,
+    HousingFeature,
+    StudentClub,
+    SportActivity,
+    CampusLifeOverview,
 )
 
-class Command(BaseCommand):
-    help = "Clears all seeded university data from the database while keeping superusers intact."
 
-    def add_arguments(self, parser):
-        parser.add_argument(
-            '--all',
-            action='store_true',
-            help='Also delete regular users linked to student profiles.',
-        )
+class Command(BaseCommand):
+    help = "Clears all university data from tables while keeping ALL UserProfile accounts (admins, faculty, students) completely intact."
 
     def handle(self, *args, **options):
-        self.stdout.write("Clearing university database tables...")
+        self.stdout.write("Clearing university data while preserving all user accounts...")
 
         with transaction.atomic():
-            # Delete in reverse foreign key order to prevent CASCADE issues
-            schedule_count, _ = ScheduleItem.objects.all().delete()
-            grade_count, _ = StudentGrade.objects.all().delete()
-            student_count, _ = Student.objects.all().delete()
-            course_count, _ = Course.objects.all().delete()
-            alumni_count, _ = AlumniStory.objects.all().delete()
-            member_count, _ = FacultyMember.objects.all().delete()
-            program_count, _ = Program.objects.all().delete()
-            faculty_count, _ = Faculty.objects.all().delete()
-            news_count, _ = NewsArticle.objects.all().delete()
-            event_count, _ = Event.objects.all().delete()
+            # Delete in reverse FK order to avoid constraints
+            FacultyLaboratory.objects.all().delete()
+            FacultyAppointment.objects.all().delete()
+            ScheduleItem.objects.all().delete()
+            StudentGrade.objects.all().delete()
+            Student.objects.all().delete()
+            Course.objects.all().delete()
+            AlumniStory.objects.all().delete()
+            FacultyMember.objects.all().delete()
+            Program.objects.all().delete()
+            Faculty.objects.all().delete()
+            NewsArticle.objects.all().delete()
+            Event.objects.all().delete()
+            AcademicCalendarEvent.objects.all().delete()
+            JobApplication.objects.all().delete()
+            JobOffer.objects.all().delete()
+            AdmissionApplication.objects.all().delete()
+            UserNotificationState.objects.all().delete()
+            UserNotificationPreference.objects.all().delete()
+            Notification.objects.all().delete()
+            ActivityLog.objects.all().delete()
+            BookReservation.objects.all().delete()
+            Book.objects.all().delete()
+            ResearchPublication.objects.all().delete()
+            ResearchArea.objects.all().delete()
+            ResearchCenter.objects.all().delete()
+            HousingFeature.objects.all().delete()
+            StudentClub.objects.all().delete()
+            SportActivity.objects.all().delete()
+            CampusLifeOverview.objects.all().delete()
+            SiteSetting.objects.all().delete()
 
-            self.stdout.write(self.style.SUCCESS(
-                f"Cleared data:\n"
-                f"  - ScheduleItems: {schedule_count}\n"
-                f"  - StudentGrades: {grade_count}\n"
-                f"  - Students: {student_count}\n"
-                f"  - Courses: {course_count}\n"
-                f"  - AlumniStories: {alumni_count}\n"
-                f"  - FacultyMembers: {member_count}\n"
-                f"  - Programs: {program_count}\n"
-                f"  - Faculties: {faculty_count}\n"
-                f"  - NewsArticles: {news_count}\n"
-                f"  - Events: {event_count}"
-            ))
-
-        self.stdout.write(self.style.SUCCESS("Database cleared successfully! Tables are now empty."))
+        self.stdout.write(
+            self.style.SUCCESS(
+                "Successfully cleared all data from university tables!\n"
+                "ALL user accounts (UserProfile) and credentials remain safely intact."
+            )
+        )
