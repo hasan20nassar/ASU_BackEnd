@@ -973,7 +973,7 @@ class NewsArticleSerializer(serializers.ModelSerializer):
         source="gallery_images", required=False, default=list
     )
     attachments = serializers.JSONField(
-        source="attachments", required=False, default=list
+        required=False, default=list
     )
     createdAt = serializers.DateTimeField(source="created_at", read_only=True)
     updatedAt = serializers.DateTimeField(source="updated_at", read_only=True)
