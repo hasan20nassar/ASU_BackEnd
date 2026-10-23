@@ -22,6 +22,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 from .models import (
     Faculty,
+    FacultyLaboratory,
     Program,
     FacultyMember,
     FacultyAppointment,
@@ -55,6 +56,7 @@ from .models import (
 from PIL import Image
 from .serializers import (
     FacultySerializer,
+    FacultyLaboratorySerializer,
     ProgramSerializer,
     FacultyMemberSerializer,
     FacultyAppointmentSerializer,
@@ -1766,5 +1768,43 @@ class CampusLifeOverviewViewSet(viewsets.ModelViewSet):
             "totalHousingFeatures": total_housing,
             "totalSports": total_sports,
         })
+
+
+class FacultyLaboratoryViewSet(viewsets.ModelViewSet):
+    """
+    CRUD API for Faculty Laboratories and Scientific Research Facilities.
+    Supports filtering by ?faculty=<id> or ?faculty_slug=<slug>.
+    """
+    queryset = (
+        FacultyLaboratory.objects.all()
+        .select_related("faculty")
+        .order_by("order", "id")
+    )
+    serializer_class = FacultyLaboratorySerializer
+    permission_classes = [AllowAny]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = [
+        "name_ar",
+        "name_en",
+        "description_ar",
+        "description_en",
+        "equipment_ar",
+        "equipment_en",
+        "location_ar",
+        "location_en",
+        "supervisor_name_ar",
+        "supervisor_name_en",
+    ]
+    ordering_fields = ["order", "id", "created_at", "name_ar", "name_en"]
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        faculty_id = self.request.query_params.get("faculty")
+        if faculty_id:
+            qs = qs.filter(faculty_id=faculty_id)
+        faculty_slug = self.request.query_params.get("faculty_slug")
+        if faculty_slug:
+            qs = qs.filter(faculty__slug=faculty_slug)
+        return qs
 
 

@@ -33,12 +33,15 @@ from .views import (
     StudentClubViewSet,
     SportActivityViewSet,
     CampusLifeOverviewViewSet,
+    FacultyLaboratoryViewSet,
 )
 
 router = DefaultRouter()
 router.register(r"users", UserProfileViewSet, basename="user-profile")
 router.register(r"site-settings", SiteSettingViewSet, basename="site-setting")
 router.register(r"faculties", FacultyViewSet, basename="faculty")
+router.register(r"faculty-laboratories", FacultyLaboratoryViewSet, basename="faculty-laboratory")
+router.register(r"laboratories", FacultyLaboratoryViewSet, basename="laboratory")
 
 router.register(r"programs", ProgramViewSet, basename="program")
 router.register(r"faculty-members", FacultyMemberViewSet, basename="faculty-member")

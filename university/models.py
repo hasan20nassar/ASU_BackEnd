@@ -147,6 +147,61 @@ class Faculty(models.Model):
         verbose_name_plural = "Faculties"
 
 
+class FacultyLaboratory(models.Model):
+    """
+    Represents an official academic or research laboratory affiliated with a Faculty.
+    Stores comprehensive equipment specifications, capacity, location, supervisor, and public presentation data.
+    """
+    faculty = models.ForeignKey(
+        Faculty,
+        on_delete=models.CASCADE,
+        related_name="laboratories",
+        verbose_name="Faculty",
+    )
+    name_ar = models.CharField(max_length=255, verbose_name="Laboratory Name (AR)")
+    name_en = models.CharField(max_length=255, verbose_name="Laboratory Name (EN)")
+    description_ar = models.TextField(
+        blank=True, default="", verbose_name="Description (AR)"
+    )
+    description_en = models.TextField(
+        blank=True, default="", verbose_name="Description (EN)"
+    )
+    equipment_ar = models.TextField(
+        blank=True, default="", verbose_name="Equipment & Capabilities (AR)"
+    )
+    equipment_en = models.TextField(
+        blank=True, default="", verbose_name="Equipment & Capabilities (EN)"
+    )
+    image = models.TextField(blank=True, default="", verbose_name="Image URL or Path")
+    location_ar = models.CharField(
+        max_length=255, blank=True, default="", verbose_name="Location / Building (AR)"
+    )
+    location_en = models.CharField(
+        max_length=255, blank=True, default="", verbose_name="Location / Building (EN)"
+    )
+    capacity = models.PositiveIntegerField(
+        default=30, blank=True, null=True, verbose_name="Student Capacity"
+    )
+    supervisor_name_ar = models.CharField(
+        max_length=255, blank=True, default="", verbose_name="Supervisor Name (AR)"
+    )
+    supervisor_name_en = models.CharField(
+        max_length=255, blank=True, default="", verbose_name="Supervisor Name (EN)"
+    )
+    order = models.PositiveIntegerField(default=0, verbose_name="Display Order")
+    is_active = models.BooleanField(default=True, verbose_name="Is Active")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name_ar} ({self.faculty.name_ar})"
+
+    class Meta:
+        verbose_name = "Faculty Laboratory"
+        verbose_name_plural = "Faculty Laboratories"
+        ordering = ["order", "id"]
+
+
 def default_program_layout():
     return {
         "header_style": "hero_split",

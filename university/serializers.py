@@ -6,6 +6,7 @@ import uuid
 from django.utils.text import slugify
 from .models import (
     Faculty,
+    FacultyLaboratory,
     Program,
     FacultyMember,
     FacultyAppointment,
@@ -384,6 +385,62 @@ class ProgramSerializer(serializers.ModelSerializer):
         return super().to_internal_value(ret_data)
 
 
+class FacultyLaboratorySerializer(serializers.ModelSerializer):
+    nameAr = serializers.CharField(source="name_ar")
+    nameEn = serializers.CharField(
+        source="name_en", required=False, allow_blank=True, default=""
+    )
+    descriptionAr = serializers.CharField(
+        source="description_ar", required=False, allow_blank=True, default=""
+    )
+    descriptionEn = serializers.CharField(
+        source="description_en", required=False, allow_blank=True, default=""
+    )
+    equipmentAr = serializers.CharField(
+        source="equipment_ar", required=False, allow_blank=True, default=""
+    )
+    equipmentEn = serializers.CharField(
+        source="equipment_en", required=False, allow_blank=True, default=""
+    )
+    locationAr = serializers.CharField(
+        source="location_ar", required=False, allow_blank=True, default=""
+    )
+    locationEn = serializers.CharField(
+        source="location_en", required=False, allow_blank=True, default=""
+    )
+    supervisorNameAr = serializers.CharField(
+        source="supervisor_name_ar", required=False, allow_blank=True, default=""
+    )
+    supervisorNameEn = serializers.CharField(
+        source="supervisor_name_en", required=False, allow_blank=True, default=""
+    )
+    isActive = serializers.BooleanField(source="is_active", required=False, default=True)
+
+    class Meta:
+        model = FacultyLaboratory
+        fields = [
+            "id",
+            "faculty",
+            "nameAr",
+            "nameEn",
+            "descriptionAr",
+            "descriptionEn",
+            "equipmentAr",
+            "equipmentEn",
+            "image",
+            "locationAr",
+            "locationEn",
+            "capacity",
+            "supervisorNameAr",
+            "supervisorNameEn",
+            "order",
+            "isActive",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = ["id", "created_at", "updated_at"]
+
+
 class FacultySerializer(serializers.ModelSerializer):
     nameAr = serializers.CharField(source="name_ar")
     nameEn = serializers.CharField(
@@ -456,6 +513,8 @@ class FacultySerializer(serializers.ModelSerializer):
         source="layout_config", required=False
     )
     programs = ProgramSerializer(many=True, read_only=True)
+    laboratories = FacultyLaboratorySerializer(many=True, read_only=True)
+    facilities = serializers.SerializerMethodField()
     dean = serializers.PrimaryKeyRelatedField(
         queryset=FacultyMember.objects.all(), required=False, allow_null=True
     )
@@ -495,6 +554,7 @@ class FacultySerializer(serializers.ModelSerializer):
             "researchPapersCount",
             "employmentRate",
             "facilities",
+            "laboratories",
             "guideDocumentUrl",
             "layoutConfig",
             "programs",
@@ -502,6 +562,30 @@ class FacultySerializer(serializers.ModelSerializer):
             "totalTeachers",
             "totalStudents",
         ]
+
+    @extend_schema_field(serializers.ListField(child=serializers.DictField()))
+    def get_facilities(self, obj):
+        labs = obj.laboratories.filter(is_active=True).order_by("order", "id")
+        if labs.exists():
+            return [
+                {
+                    "id": lab.id,
+                    "nameAr": lab.name_ar,
+                    "nameEn": lab.name_en or lab.name_ar,
+                    "descriptionAr": lab.description_ar,
+                    "descriptionEn": lab.description_en or lab.description_ar,
+                    "equipmentAr": lab.equipment_ar,
+                    "equipmentEn": lab.equipment_en,
+                    "locationAr": lab.location_ar,
+                    "locationEn": lab.location_en,
+                    "capacity": lab.capacity,
+                    "supervisorNameAr": lab.supervisor_name_ar,
+                    "supervisorNameEn": lab.supervisor_name_en,
+                    "image": lab.image,
+                }
+                for lab in labs
+            ]
+        return obj.facilities or []
 
     @extend_schema_field(serializers.DictField())
     def get_deanDetail(self, obj):
@@ -564,6 +648,30 @@ class FacultySerializer(serializers.ModelSerializer):
                 else "Academic Faculty"
             )
         return super().to_internal_value(ret_data)
+
+    def update(self, instance, validated_data):
+        request = self.context.get("request")
+        if request and "facilities" in request.data:
+            raw_facilities = request.data.get("facilities")
+            if isinstance(raw_facilities, list):
+                instance.facilities = raw_facilities
+                # Sync directly to FacultyLaboratory database rows
+                FacultyLaboratory.objects.filter(faculty=instance).delete()
+                for idx, item in enumerate(raw_facilities):
+                    if isinstance(item, dict) and (item.get("nameAr") or item.get("name_ar")):
+                        FacultyLaboratory.objects.create(
+                            faculty=instance,
+                            name_ar=item.get("nameAr") or item.get("name_ar") or "",
+                            name_en=item.get("nameEn") or item.get("name_en") or "",
+                            description_ar=item.get("descriptionAr") or item.get("description_ar") or "",
+                            description_en=item.get("descriptionEn") or item.get("description_en") or "",
+                            equipment_ar=item.get("equipmentAr") or item.get("equipment_ar") or "",
+                            equipment_en=item.get("equipmentEn") or item.get("equipment_en") or "",
+                            image=item.get("image") or "",
+                            order=idx,
+                        )
+                validated_data["labs_count"] = len(raw_facilities)
+        return super().update(instance, validated_data)
 
 
 class FacultyMemberSerializer(serializers.ModelSerializer):

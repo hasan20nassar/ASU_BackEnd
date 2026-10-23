@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import (
     Faculty,
+    FacultyLaboratory,
     Program,
     FacultyMember,
     AlumniStory,
@@ -31,10 +32,31 @@ class UserProfileAdmin(admin.ModelAdmin):
     search_fields = ("email", "name_ar", "name_en", "username")
 
 
+class FacultyLaboratoryInline(admin.TabularInline):
+    model = FacultyLaboratory
+    extra = 1
+
+
 @admin.register(Faculty)
 class FacultyAdmin(admin.ModelAdmin):
     list_display = ("name_en", "slug", "icon", "color")
     search_fields = ("name_en", "name_ar", "slug")
+    inlines = [FacultyLaboratoryInline]
+
+
+@admin.register(FacultyLaboratory)
+class FacultyLaboratoryAdmin(admin.ModelAdmin):
+    list_display = ("name_ar", "name_en", "faculty", "location_ar", "capacity", "is_active", "order")
+    list_filter = ("faculty", "is_active")
+    search_fields = (
+        "name_ar",
+        "name_en",
+        "description_ar",
+        "description_en",
+        "equipment_ar",
+        "faculty__name_ar",
+        "faculty__name_en",
+    )
 
 
 @admin.register(Program)
