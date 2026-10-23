@@ -78,6 +78,7 @@ class UniversalMediaStorage(Storage):
             "folder": folder,
             "public_id": public_id,
             "resource_type": resource_type,
+            "access_mode": "public",
             "overwrite": True,
             "unique_filename": False,
             "use_filename": False,
