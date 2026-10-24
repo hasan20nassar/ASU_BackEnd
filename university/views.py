@@ -1051,20 +1051,42 @@ class SiteSettingViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     authentication_classes = []
 
+    def _get_or_create_setting(self):
+        from django.db import connection
+        from django.db.utils import ProgrammingError
+
+        try:
+            setting, _ = SiteSetting.objects.get_or_create(id=1)
+            return setting
+        except ProgrammingError:
+            # Self-healing safeguard for serverless/cloud databases (e.g. Vercel + Neon)
+            # where new JSONField migrations may not have been executed manually yet.
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """
+                    ALTER TABLE university_sitesetting
+                    ADD COLUMN IF NOT EXISTS published_pages jsonb NOT NULL DEFAULT '{}'::jsonb;
+                    ALTER TABLE university_sitesetting
+                    ADD COLUMN IF NOT EXISTS home_page_config jsonb NOT NULL DEFAULT '{}'::jsonb;
+                    """
+                )
+            setting, _ = SiteSetting.objects.get_or_create(id=1)
+            return setting
+
     def list(self, request, *args, **kwargs):
-        setting, _ = SiteSetting.objects.get_or_create(id=1)
+        setting = self._get_or_create_setting()
         serializer = self.get_serializer(setting)
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
-        setting, _ = SiteSetting.objects.get_or_create(id=1)
+        setting = self._get_or_create_setting()
         serializer = self.get_serializer(setting, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
-        setting, _ = SiteSetting.objects.get_or_create(id=1)
+        setting = self._get_or_create_setting()
         serializer = self.get_serializer(setting, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
