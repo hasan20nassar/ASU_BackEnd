@@ -1382,6 +1382,9 @@ class SiteSetting(models.Model):
     published_pages = models.JSONField(
         default=dict, blank=True, verbose_name="Published Pages JSON"
     )
+    home_page_config = models.JSONField(
+        default=dict, blank=True, verbose_name="Home Page Builder Config JSON"
+    )
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):

@@ -1397,6 +1397,9 @@ class SiteSettingSerializer(serializers.ModelSerializer):
     publishedPages = serializers.JSONField(
         source="published_pages", required=False, default=dict
     )
+    homePageConfig = serializers.JSONField(
+        source="home_page_config", required=False, default=dict
+    )
     updatedAt = serializers.DateTimeField(source="updated_at", read_only=True)
 
     class Meta:
@@ -1417,6 +1420,7 @@ class SiteSettingSerializer(serializers.ModelSerializer):
             "showResults",
             "socialLinks",
             "publishedPages",
+            "homePageConfig",
             "updatedAt",
         ]
 
