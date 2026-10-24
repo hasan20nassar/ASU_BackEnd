@@ -1049,6 +1049,7 @@ class SiteSettingViewSet(viewsets.ModelViewSet):
     queryset = SiteSetting.objects.all()
     serializer_class = SiteSettingSerializer
     permission_classes = [AllowAny]
+    authentication_classes = []
 
     def list(self, request, *args, **kwargs):
         setting, _ = SiteSetting.objects.get_or_create(id=1)
